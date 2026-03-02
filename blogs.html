@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blogs — Karigar Services</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .blogs-page {
+            padding: 120px 24px 80px;
+            min-height: 80vh;
+        }
+
+        .b-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .b-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: var(--transition);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .b-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .b-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .b-title {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .b-card:hover .b-title {
+            color: var(--gold);
+        }
+
+        .b-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .b-link {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAV (Simplified) -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon small">
+                    <svg viewBox="0 0 44 44" fill="none">
+                        <circle cx="22" cy="22" r="22" fill="#F5A623" />
+                        <path d="M14 30 L22 10 L30 30" stroke="white" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M10 22 Q22 36 34 22" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                            fill="none" />
+                        <circle cx="22" cy="18" r="3" fill="white" />
+                    </svg>
+                </div>
+                <div class="logo-text"><span class="logo-name">KARIGAR</span><span class="logo-sub">SERVICES &amp;
+                        SUPPLIES</span></div>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#services">Services</a>
+                <a href="blogs.html" style="color:var(--text-primary); font-weight:700">Blogs</a>
+                <a href="testimonials.html">Testimonials</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="index.html#request" class="btn-nav">Request Service</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="blogs-page container">
+        <div class="section-header">
+            <div class="section-tag">Resources & Guides</div>
+            <h2>Our <span class="highlight">Blogs</span></h2>
+            <p class="section-desc">Learn more about our professional services and how we deliver excellence across
+                Pakistan.</p>
+        </div>
+
+        <!-- Generated via Script for the 22 services -->
+        <div class="b-grid" id="blogsGrid"></div>
+    </section>
+
+    <script src="app.js"></script>
+    <script>
+        const grid = document.getElementById('blogsGrid');
+        grid.innerHTML = SERVICES.map(s => {
+            const slug = s.name.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-');
+            return `
+        <a href="blog-posts/${slug}.html" class="b-card">
+          <span class="b-icon">${s.emoji}</span>
+          <h3 class="b-title">Professional ${s.name} in Pakistan</h3>
+          <p class="b-desc">Discover how Karigar provides top-tier ${s.name.toLowerCase()} for residential and commercial spaces.</p>
+          <span class="b-link">Read More &rarr;</span>
+        </a>
+      `;
+        }).join('');
+    </script>
+</body>
+
+</html>

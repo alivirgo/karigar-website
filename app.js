@@ -253,3 +253,83 @@ document.querySelectorAll('.service-card, .step-card, .contact-card').forEach(el
     el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     observer.observe(el);
 });
+
+// ─── WHATSAPP MODAL LOGIC ───
+const waOpenBtn = document.getElementById('waOpenBtn');
+const waCloseBtn = document.getElementById('waCloseBtn');
+const waModal = document.getElementById('waModal');
+const waForm = document.getElementById('waForm');
+
+if (waOpenBtn && waModal) {
+    // Populate Service Dropdown
+    const waService = document.getElementById('waService');
+    SERVICES.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.name;
+        opt.textContent = `${s.emoji}  ${s.name}`;
+        waService.appendChild(opt);
+    });
+
+    // Open/Close Handlers
+    waOpenBtn.addEventListener('click', () => waModal.classList.add('active'));
+    waCloseBtn.addEventListener('click', () => waModal.classList.remove('active'));
+    waModal.addEventListener('click', (e) => {
+        if (e.target === waModal) waModal.classList.remove('active');
+    });
+
+    // Handle Submit
+    waForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('waName').value.trim();
+        const phone = document.getElementById('waPhone').value.trim();
+        const area = document.getElementById('waArea').value.trim();
+        const service = document.getElementById('waService').value;
+
+        if (!name || !phone || !area || !service) {
+            alert('Please fill out all fields.');
+            return;
+        }
+
+        const btnText = document.getElementById('waBtnText');
+        const btnLoader = document.getElementById('waBtnLoader');
+        const submitBtn = waForm.querySelector('button[type="submit"]');
+
+        submitBtn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoader.style.display = 'inline';
+
+        const payload = {
+            customerName: name,
+            customerPhone: phone,
+            customerArea: area,
+            serviceType: service,
+            submittedAt: new Date().toISOString(),
+            source: 'whatsapp',
+        };
+
+        try {
+            await fetch(`${WORKER_URL}/api/service-request`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            // Build WhatsApp Message
+            const text = `Hi Karigar Services!\n\nI need ${service}.\n\nName: ${name}\nPhone: ${phone}\nArea: ${area}\n\nPlease let me know when a technician can arrive.`;
+            const waLink = `https://wa.me/923333301684?text=${encodeURIComponent(text)}`;
+
+            // Close modal & open WhatsApp
+            waModal.classList.remove('active');
+            waForm.reset();
+            window.open(waLink, '_blank');
+        } catch (err) {
+            console.error('WA Submit Error:', err);
+            alert('Could not submit request. Please try again or open WhatsApp directly.');
+        } finally {
+            submitBtn.disabled = false;
+            btnText.style.display = 'inline';
+            btnLoader.style.display = 'none';
+        }
+    });
+}

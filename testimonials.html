@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client Testimonials — Karigar Services</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .testimonials-page {
+            padding: 120px 24px 80px;
+            min-height: 80vh;
+        }
+
+        .t-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .t-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius);
+            padding: 32px;
+            position: relative;
+        }
+
+        .t-quote {
+            font-size: 3rem;
+            color: var(--gold);
+            opacity: 0.15;
+            position: absolute;
+            top: 16px;
+            left: 24px;
+            font-family: 'Playfair Display', serif;
+            line-height: 1;
+        }
+
+        .t-stars {
+            color: var(--gold);
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+
+        .t-text {
+            color: var(--text-primary);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .t-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            border-top: 1px solid var(--border-soft);
+            padding-top: 16px;
+        }
+
+        .t-name {
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 0.95rem;
+        }
+
+        .t-service {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .loader {
+            text-align: center;
+            padding: 60px;
+            color: var(--gold);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAV (Simplified) -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon small">
+                    <svg viewBox="0 0 44 44" fill="none">
+                        <circle cx="22" cy="22" r="22" fill="#F5A623" />
+                        <path d="M14 30 L22 10 L30 30" stroke="white" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M10 22 Q22 36 34 22" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                            fill="none" />
+                        <circle cx="22" cy="18" r="3" fill="white" />
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-name">KARIGAR</span>
+                    <span class="logo-sub">SERVICES &amp; SUPPLIES</span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#services">Services</a>
+                <a href="blogs.html">Blogs</a>
+                <a href="testimonials.html" style="color:var(--text-primary); font-weight:700">Testimonials</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="index.html#request" class="btn-nav">Request Service</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="testimonials-page container">
+        <div class="section-header">
+            <div class="section-tag">Client Feedback</div>
+            <h2>What Our <span class="highlight">Customers</span> Say</h2>
+            <p class="section-desc">Real reviews from people who used Karigar Services across Islamabad.</p>
+        </div>
+
+        <div id="loading" class="loader">Loading testimonials...</div>
+        <div class="t-grid" id="tGrid"></div>
+    </section>
+
+    <script>
+        const WORKER_URL = 'https://karigar-worker.alivirgo123.workers.dev';
+
+        async function fetchTestimonials() {
+            try {
+                const res = await fetch(`${WORKER_URL}/api/testimonials`);
+                const data = await res.json();
+
+                document.getElementById('loading').style.display = 'none';
+
+                const grid = document.getElementById('tGrid');
+                if (!data.testimonials || data.testimonials.length === 0) {
+                    grid.innerHTML = '<p style="text-align:center; color: #6B6B80; grid-column: 1/-1;">No testimonials collected yet.</p>';
+                    return;
+                }
+
+                grid.innerHTML = data.testimonials.map(t => {
+                    const stars = '★'.repeat(t.rating) + '☆'.repeat(5 - t.rating);
+                    return `
+            <div class="t-card">
+              <div class="t-quote">"</div>
+              <div class="t-stars">${stars}</div>
+              <p class="t-text">${t.text}</p>
+              <div class="t-footer">
+                <span class="t-name">${t.customerName}</span>
+                <span class="t-service">${t.service}</span>
+              </div>
+            </div>
+          `;
+                }).join('');
+            } catch (err) {
+                document.getElementById('loading').textContent = 'Failed to load testimonials.';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchTestimonials);
+    </script>
+</body>
+
+</html>
