@@ -121,9 +121,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ─── FORM VALIDATION ───
-function getVal(id) { return document.getElementById(id).value.trim(); }
-function showError(id, msg) { document.getElementById(id).textContent = msg; }
-function clearError(id) { document.getElementById(id).textContent = ''; }
+function getVal(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+}
+function showError(id, msg) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = msg;
+}
+function clearError(id) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = '';
+}
 
 function validatePhone(phone) {
     // Accept Pakistani formats: 03XX-XXXXXXX, +923XXXXXXXXX, etc.
