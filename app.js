@@ -326,7 +326,7 @@ if (waOpenBtn && waModal) {
 
             // Build WhatsApp Message
             const text = `Hi Karigar Services!\n\nI need ${service}.\n\nName: ${name}\nPhone: ${phone}\nArea: ${area}\n\nPlease let me know when a technician can arrive.`;
-            const waLink = `https://wa.me/923333301684?text=${encodeURIComponent(text)}`;
+            const waLink = `https://wa.me/923335210543?text=${encodeURIComponent(text)}`;
 
             // Close modal & open WhatsApp
             waModal.classList.remove('active');
