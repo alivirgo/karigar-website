@@ -149,15 +149,34 @@
                     </p>
                 </div>
                 <div class="footer-links">
-                    <h4>Explore</h4>
-                    <a href="index.html#services">Services</a>
+                    <h4>Top Services</h4>
+                    <a href="index.html#services">AC Services</a>
+                    <a href="index.html#services">CCTV Security</a>
+                    <a href="index.html#services">Plumbing</a>
+                    <a href="index.html#services">Electrical</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="index.html">Home</a>
+                    <a href="index.html#how-it-works">Our Process</a>
                     <a href="blogs.html">Blogs</a>
                     <a href="testimonials.html">Reviews</a>
-                    <a href="index.html#how-it-works">Process</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Reach Us</h4>
+                    <a href="tel:+923335210543">📞 +92 333 5210543</a>
+                    <a href="tel:+923015334468">📞 +92 301 5334468</a>
+                    <a href="mailto:info@karigarservices.pk">✉️ info@karigarservices.pk</a>
+                    <div class="footer-social" style="margin-top: 20px;">
+                        <a href="#">𝕏</a>
+                        <a href="#">fb</a>
+                        <a href="#">ig</a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 Karigar Solutions. Premium maintenance, reimagined.</p>
+                <div style="font-size: 0.8rem; opacity: 0.6;">Serving Islamabad & Rawalpindi</div>
             </div>
         </div>
     </footer>
@@ -179,6 +198,39 @@
             </a>
         `).join('');
     </script>
+    <!-- WhatsApp Floating Button -->
+    <button class="wa-float-btn" id="waOpenBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.038 3.069l-.469 2.355 2.411-.471c.76.542 1.991.913 3.061.913 3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.586-5.766-5.768-5.766zM15.529 14.39c-.113.316-.653.626-.969.664-.282.033-.654.062-1.04-.06-.23-.072-.519-.172-1.129-.434-2.128-.916-3.513-3.085-3.619-3.226-.106-.14-.79-.908-.79-1.732 0-.824.431-1.229.585-1.401.154-.172.336-.215.449-.215.112 0 .225 0 .324.004.102.004.22.016.345.297.103.243.435 1.026.471 1.103.037.076.061.165.011.265-.05.101-.075.163-.141.25-.067.086-.149.191-.212.257-.075.074-.153.155-.065.305.088.15.39.63.836 1.025.576.51 1.06.669 1.21.745.15.075.237.062.325-.038.087-.1 0 0 .375-.537.113-.15.226-.25.337-.25s.262.05.412.125c.15.075.938.462 1.088.537s.25.112.288.175c.036.063.036.365-.077.681z" />
+            <path
+                d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm0 1.5c-4.694 0-8.5 3.806-8.5 8.5 0 1.636.46 3.164 1.255 4.467l-1.055 3.411 3.568-.847c1.32.894 2.923 1.469 4.732 1.469 4.694 0 8.5-3.806 8.5-8.5S16.694 3.5 12 3.5z" />
+        </svg>
+        Chat with us
+    </button>
+
+    <div class="wa-modal-overlay" id="waModal">
+        <div class="wa-modal">
+            <button class="wa-close" id="waCloseBtn">&times;</button>
+            <div class="wa-header">
+                <h3>WhatsApp Direct</h3>
+                <p>Hello! How can we help you today?</p>
+            </div>
+            <form id="waForm" class="service-form"
+                style="padding: 0; background: none; border: none; box-shadow: none;">
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="wa_name" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="wa_msg" placeholder="I need help with..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Start Chat</button>
+            </form>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 

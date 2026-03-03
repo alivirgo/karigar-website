@@ -345,3 +345,4 @@ if (waOpenBtn && waModal) {
             }
         });
     }
+}

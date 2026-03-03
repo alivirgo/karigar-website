@@ -567,7 +567,7 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-lg);
-    padding: 48px;
+    padding: 32px;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(225, 167, 48, 0.05);
     position: relative;
     overflow: hidden;
@@ -584,7 +584,7 @@ body {
 }
 
 .form-group {
-    margin-bottom: 22px;
+    margin-bottom: 16px;
 }
 
 label {
@@ -806,8 +806,8 @@ textarea {
 
 .footer-inner {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 80px;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 40px;
     margin-bottom: 60px;
 }
 
@@ -829,10 +829,12 @@ textarea {
 
 .footer-links a,
 .footer-contact p {
+    display: block;
     color: var(--text-secondary);
     text-decoration: none;
     font-size: 0.85rem;
     transition: color 0.3s ease;
+    margin-bottom: 12px;
 }
 
 .footer-links a:hover {
