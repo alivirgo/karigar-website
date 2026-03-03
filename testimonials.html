@@ -58,6 +58,15 @@
             z-index: 1;
         }
 
+        .t-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-soft);
+        }
+
         .t-footer {
             display: flex;
             flex-direction: column;
@@ -147,11 +156,14 @@
 
                 grid.innerHTML = data.testimonials.map(t => {
                     const stars = '★'.repeat(t.rating) + '☆'.repeat(5 - t.rating);
+                    const imageHtml = t.image ? `<img src="data:image/jpeg;base64,${t.image}" alt="Work Completed" class="t-image" loading="lazy" />` : '';
+
                     return `
             <div class="t-card">
               <div class="t-quote">"</div>
               <div class="t-stars">${stars}</div>
               <p class="t-text">${t.text}</p>
+              ${imageHtml}
               <div class="t-footer">
                 <span class="t-name">${t.customerName}</span>
                 <span class="t-service">${t.service}</span>
