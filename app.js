@@ -38,12 +38,15 @@ function updateObservers() {
 
 // Mobile App / Touch Check
 function checkMobile() {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-        || (window.innerWidth <= 768);
-    if (isMobile) {
+    // Strictly check for phone/tablet User Agents to differentiate from resized desktop browsers
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isSmallScreen = window.innerWidth <= 768;
+
+    if (isMobileUA || (isSmallScreen && 'ontouchstart' in window)) {
         document.body.classList.add('is-mobile');
         document.body.setAttribute('data-view', 'mobile');
     } else {
+        document.body.classList.remove('is-mobile');
         document.body.setAttribute('data-view', 'desktop');
     }
 }
