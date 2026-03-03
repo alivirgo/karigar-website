@@ -949,78 +949,135 @@ textarea {
     border-color: var(--brand-accent);
 }
 
-/* ─── TESTIMONIALS (Consolidated) ─── */
-.t-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 32px;
+/* ─── TESTIMONIALS (Phase 22 Redesign) ─── */
+.testimonials-section {
+    padding: 80px 0;
+}
+
+.t-masonry {
+    columns: 1;
+    column-gap: 32px;
+    width: 100%;
     margin-top: 48px;
 }
 
-.t-card {
+@media (min-width: 768px) {
+    .t-masonry {
+        columns: 2;
+    }
+}
+
+@media (min-width: 1068px) {
+    .t-masonry {
+        columns: 3;
+    }
+}
+
+.t-card-v2 {
+    break-inside: avoid;
     background: var(--bg-card);
     border: 1px solid var(--border-soft);
     border-radius: var(--radius-lg);
-    padding: 40px;
-    position: relative;
+    padding: 24px;
+    margin-bottom: 32px;
     transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
-.t-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(225, 167, 48, 0.3);
+.t-card-v2:hover {
+    border-color: var(--brand-accent);
+    transform: scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-.t-quote {
-    font-size: 4rem;
-    color: var(--brand-accent);
-    opacity: 0.1;
+.t-verified-badge {
     position: absolute;
-    top: 20px;
-    left: 30px;
-    font-family: serif;
-}
-
-.t-stars {
+    top: 24px;
+    right: 24px;
+    background: rgba(64, 208, 253, 0.1);
     color: var(--brand-accent);
-    margin-bottom: 20px;
-    font-size: 0.9rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(64, 208, 253, 0.2);
 }
 
-.t-text {
+.t-verified-badge svg {
+    width: 14px;
+    height: 14px;
+}
+
+.t-stars-v2 {
+    color: var(--brand-accent);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 2px;
+}
+
+.t-text-v2 {
     color: var(--text-primary);
     font-size: 1.05rem;
     line-height: 1.6;
     margin-bottom: 24px;
-    font-style: italic;
+    font-weight: 400;
 }
 
-.t-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: var(--radius);
-    margin-bottom: 24px;
-    border: 1px solid var(--border-soft);
-}
-
-.t-footer {
+.t-img-container {
+    margin: 0 -24px 24px;
+    background: #000;
+    line-height: 0;
     border-top: 1px solid var(--border-soft);
-    padding-top: 20px;
+    border-bottom: 1px solid var(--border-soft);
 }
 
-.t-name {
-    display: block;
-    font-weight: 700;
+.t-work-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    max-height: 400px;
+}
+
+.t-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.t-user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.t-name-v2 {
     color: var(--text-primary);
-    margin-bottom: 4px;
+    font-weight: 700;
+    font-size: 0.95rem;
 }
 
-.t-service {
-    font-size: 0.85rem;
-    color: var(--text-muted);
+.t-service-v2 {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+}
+
+.t-quote-v2 {
+    position: absolute;
+    bottom: -20px;
+    right: 10px;
+    font-size: 8rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--brand-accent);
+    opacity: 0.05;
+    pointer-events: none;
 }
 
 /* ─── RESPONSIVE ─── */
@@ -1092,8 +1149,8 @@ textarea {
         font-size: 2.8rem;
     }
 
-    .t-grid {
-        grid-template-columns: 1fr;
+    .t-masonry {
+        columns: 1 !important;
     }
 
     .footer-inner {

@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Testimonials — Karigar Services</title>
+    <title>Verified Reviews — Karigar Services</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap"
         rel="stylesheet" />
     <script src="app.js" defer></script>
     <link rel="stylesheet" href="style.css" />
@@ -16,6 +16,13 @@
         .hero-page {
             padding: 160px 0 80px;
             text-align: center;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
         }
     </style>
 </head>
@@ -54,14 +61,18 @@
 
     <header class="hero-page">
         <div class="container">
-            <h1 class="gradient-text">Testimonials</h1>
-            <p>What our clients say about our professional maintenance services.</p>
+            <div class="section-tag" style="margin: 0 auto 16px;">Verified Satisfaction</div>
+            <h1 class="gradient-text">Voices of Karigar.</h1>
+            <p>Real stories of premium maintenance from homeowners across Islamabad & Rawalpindi.</p>
         </div>
     </header>
 
-    <section class="testimonials-page container">
-        <div id="loading" class="loader">Loading premium reviews...</div>
-        <div class="t-grid" id="tGrid"></div>
+    <section class="testimonials-section container">
+        <div id="loading">
+            <div class="loader" style="margin: 0 auto 20px;"></div>
+            Syncing verified reviews...
+        </div>
+        <div class="t-masonry" id="tGrid"></div>
     </section>
 
     <footer class="footer">
@@ -102,7 +113,6 @@
                 <div class="footer-links">
                     <h4>Reach Us</h4>
                     <a href="tel:+923335210543">📞 +92 333 5210543</a>
-                    <a href="tel:+923015334468">📞 +92 301 5334468</a>
                     <a href="mailto:info@karigarservices.pk">✉️ info@karigarservices.pk</a>
                     <div class="footer-social" style="margin-top: 20px;">
                         <a href="#">𝕏</a>
@@ -113,7 +123,6 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 Karigar Solutions. Premium maintenance, reimagined.</p>
-                <div style="font-size: 0.8rem; opacity: 0.6;">Serving Islamabad & Rawalpindi</div>
             </div>
         </div>
     </footer>
@@ -122,60 +131,63 @@
         const WORKER_URL = 'https://karigar-worker.alivirgo123.workers.dev';
 
         async function fetchTestimonials() {
-            console.log('Fetching testimonials from:', WORKER_URL);
             try {
                 const res = await fetch(`${WORKER_URL}/api/testimonials`);
-                // process.stdout.write(`Worker response status: ${res.status}\n`); // This is Node.js specific, not for browser
-                console.log(`Worker response status: ${res.status}`); // Changed to console.log for browser environment
                 if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
                 const data = await res.json();
-                console.log('Testimonials data received:', data);
-
-                document.getElementById('loading').style.display = 'none';
                 const grid = document.getElementById('tGrid');
-                if (!grid) {
-                    console.error('tGrid element not found!');
-                    return;
-                }
+                const loading = document.getElementById('loading');
 
                 if (!data.testimonials || data.testimonials.length === 0) {
-                    console.log('No testimonials found in data.');
-                    grid.innerHTML = '<p style="text-align:center; color: var(--text-secondary); grid-column: 1/-1;">No testimonials yet.</p>';
+                    loading.textContent = 'No verified stories yet. Be the first to share your experience!';
                     return;
                 }
 
+                loading.style.display = 'none';
                 grid.innerHTML = data.testimonials.map(t => {
                     const stars = '★'.repeat(t.rating) + '☆'.repeat(5 - t.rating);
-                    const imageHtml = t.image ? `<img src="data:image/jpeg;base64,${t.image}" alt="Work" class="t-image" />` : '';
+                    const imageHtml = t.image ? `
+                        <div class="t-img-container">
+                            <img src="data:image/jpeg;base64,${t.image}" alt="Work evidence" class="t-work-img" loading="lazy" />
+                        </div>
+                    ` : '';
+
+                    const verifiedBadge = t.requestId ? `
+                        <div class="t-verified-badge">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            Verified
+                        </div>
+                    ` : '';
+
                     return `
-                        <div class="t-card reveal">
-                            <div class="t-quote">"</div>
-                            <div class="t-stars">${stars}</div>
-                            <p class="t-text">${t.text}</p>
+                        <div class="t-card-v2 reveal">
+                            ${verifiedBadge}
+                            <div class="t-stars-v2">${stars}</div>
+                            <p class="t-text-v2">${t.text}</p>
                             ${imageHtml}
-                            <div class="t-footer">
-                                <span class="t-name">${t.customerName}</span>
-                                <span class="t-service">${t.service}</span>
+                            <div class="t-user-info">
+                                <div class="t-user-details">
+                                    <span class="t-name-v2">${t.customerName}</span>
+                                    <span class="t-service-v2">${t.service || 'General Service'}</span>
+                                </div>
                             </div>
+                            <div class="t-quote-v2">"</div>
                         </div>
                     `;
                 }).join('');
 
-                // Trigger reveal animations for newly added elements
-                if (window.updateObservers) {
-                    console.log('Updating observers...');
-                    window.updateObservers();
-                } else {
-                    console.warn('window.updateObservers not found!');
-                }
+                if (window.updateObservers) window.updateObservers();
             } catch (err) {
                 console.error('Fetch testimonials failed:', err);
-                document.getElementById('loading').textContent = 'Failed to load testimonials. ' + err.message;
+                document.getElementById('loading').textContent = 'Error connecting to the experience hub.';
             }
         }
         document.addEventListener('DOMContentLoaded', fetchTestimonials);
     </script>
+
     <!-- WhatsApp Floating Button -->
     <button class="wa-float-btn" id="waOpenBtn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -218,7 +230,6 @@
             </form>
         </div>
     </div>
-
 </body>
 
 </html>
