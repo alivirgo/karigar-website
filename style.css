@@ -1036,6 +1036,22 @@ textarea {
     line-height: 0;
     border-top: 1px solid var(--border-soft);
     border-bottom: 1px solid var(--border-soft);
+    min-height: 100px;
+    position: relative;
+    overflow: hidden;
+}
+
+.t-img-container.loading::after {
+    content: "Decoding Visual...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .t-work-img {
@@ -1043,6 +1059,16 @@ textarea {
     height: auto;
     object-fit: cover;
     max-height: 400px;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.t-work-img.loaded {
+    opacity: 1;
+}
+
+.t-work-img.loaded+.loading::after {
+    display: none;
 }
 
 .t-user-info {

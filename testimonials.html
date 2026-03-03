@@ -24,6 +24,11 @@
             color: var(--text-secondary);
             font-size: 1.1rem;
         }
+
+        .t-masonry {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
     </style>
 </head>
 
@@ -130,26 +135,37 @@
     <script>
         const WORKER_URL = 'https://karigar-worker.alivirgo123.workers.dev';
 
+        function onImageLoad(img) {
+            img.classList.add('loaded');
+        }
+
         async function fetchTestimonials() {
+            const grid = document.getElementById('tGrid');
+            const loading = document.getElementById('loading');
+
             try {
                 const res = await fetch(`${WORKER_URL}/api/testimonials`);
                 if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
                 const data = await res.json();
-                const grid = document.getElementById('tGrid');
-                const loading = document.getElementById('loading');
 
                 if (!data.testimonials || data.testimonials.length === 0) {
                     loading.textContent = 'No verified stories yet. Be the first to share your experience!';
                     return;
                 }
 
-                loading.style.display = 'none';
+                // Stage 1: Render structure immediately
                 grid.innerHTML = data.testimonials.map(t => {
                     const stars = '★'.repeat(t.rating) + '☆'.repeat(5 - t.rating);
+
+                    // Progressive Image Loading: Text loads first, image container is reserved
                     const imageHtml = t.image ? `
-                        <div class="t-img-container">
-                            <img src="data:image/jpeg;base64,${t.image}" alt="Work evidence" class="t-work-img" loading="lazy" />
+                        <div class="t-img-container loading">
+                            <img src="data:image/jpeg;base64,${t.image}" 
+                                 alt="Work evidence" 
+                                 class="t-work-img" 
+                                 onload="onImageLoad(this)"
+                                 onerror="this.parentElement.style.display='none'" />
                         </div>
                     ` : '';
 
@@ -179,10 +195,23 @@
                     `;
                 }).join('');
 
-                if (window.updateObservers) window.updateObservers();
+                // Stage 2: Reveal the grid immediately even if images are decoding
+                loading.style.display = 'none';
+                grid.style.opacity = '1';
+
+                // Stage 3: Trigger entrance animations
+                setTimeout(() => {
+                    if (window.updateObservers) {
+                        window.updateObservers();
+                    }
+                }, 100);
+
             } catch (err) {
                 console.error('Fetch testimonials failed:', err);
-                document.getElementById('loading').textContent = 'Error connecting to the experience hub.';
+                loading.innerHTML = `
+                    <p style="color: #ff4d4d;">Error connecting to the experience hub.</p>
+                    <button onclick="location.reload()" class="btn-nav" style="margin-top: 15px;">Retry Sync</button>
+                `;
             }
         }
         document.addEventListener('DOMContentLoaded', fetchTestimonials);
