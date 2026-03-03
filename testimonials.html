@@ -211,6 +211,11 @@
                         </div>
                     `;
                 }).join('');
+
+                // Trigger reveal animations for newly added elements
+                if (window.updateObservers) {
+                    updateObservers();
+                }
             } catch (err) {
                 document.getElementById('loading').textContent = 'Failed to load testimonials.';
             }

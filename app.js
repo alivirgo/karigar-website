@@ -56,6 +56,7 @@ let selectedService = '';
 function renderServicesGrid() {
     const grid = document.getElementById('servicesGrid');
     const select = document.getElementById('serviceType');
+    if (!grid || !select) return;
 
     // Populate grid
     grid.innerHTML = SERVICES.map((s, i) => `
@@ -105,17 +106,22 @@ function selectService(name, idx) {
 document.addEventListener('DOMContentLoaded', () => {
     renderServicesGrid();
 
-    document.getElementById('serviceType').addEventListener('change', (e) => {
-        selectedService = e.target.value;
-        SERVICES.forEach((s, i) => {
-            const card = document.getElementById(`svc-${i}`);
-            if (s.name === selectedService) {
-                card.classList.add('selected');
-            } else {
-                card.classList.remove('selected');
-            }
+    const serviceTypeSelect = document.getElementById('serviceType');
+    if (serviceTypeSelect) {
+        serviceTypeSelect.addEventListener('change', (e) => {
+            selectedService = e.target.value;
+            SERVICES.forEach((s, i) => {
+                const card = document.getElementById(`svc-${i}`);
+                if (card) {
+                    if (s.name === selectedService) {
+                        card.classList.add('selected');
+                    } else {
+                        card.classList.remove('selected');
+                    }
+                }
+            });
         });
-    });
+    }
 });
 
 // ─── FORM VALIDATION ───
