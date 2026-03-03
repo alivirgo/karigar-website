@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const res = await fetch(`${WORKER_URL}/api/request-service`, {
+                const res = await fetch(`${WORKER_URL}/api/service-request`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
