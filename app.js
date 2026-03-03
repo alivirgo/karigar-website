@@ -119,10 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (waForm) {
         waForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const name = document.getElementById('waName').value;
+            const name = document.getElementById('wa_name').value;
             const service = document.getElementById('waService').value;
-            const area = document.getElementById('waArea').value;
-            const msg = document.getElementById('waMsg').value;
+            const area = document.getElementById('wa_area').value;
+            const msg = document.getElementById('wa_msg').value;
 
             const text = `*New Lead from Karigar Website*\n\n*Name:* ${name}\n*Service:* ${service}\n*Area:* ${area}\n*Message:* ${msg}`;
             const encoded = encodeURIComponent(text);
