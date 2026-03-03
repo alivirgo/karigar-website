@@ -112,12 +112,22 @@ body[data-view="mobile"] .container {
 }
 
 .section-tag {
-    display: inline-block;
+    display: block;
     color: var(--brand-accent);
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.85rem;
+    font-weight: 700;
     margin-bottom: 20px;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    line-height: normal;
 }
 
 .section-header {
@@ -244,17 +254,90 @@ body[data-view="mobile"] .container {
 .hamburger {
     display: none;
     flex-direction: column;
-    gap: 4px;
+    justify-content: space-between;
+    width: 20px;
+    height: 14px;
     background: none;
     border: none;
     cursor: pointer;
+    z-index: 2001;
 }
 
 .hamburger span {
-    width: 18px;
+    width: 100%;
     height: 1.5px;
     background: var(--text-primary);
     border-radius: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hamburger.open span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ─── MOBILE MENU OVERLAY ─── */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+}
+
+.mobile-links a {
+    color: var(--text-primary);
+    font-size: 2rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    transition: transform 0.3s ease;
+}
+
+.mobile-links a:hover {
+    color: var(--brand-accent);
+    transform: scale(1.1);
+}
+
+.mobile-menu .close-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 2rem;
+    cursor: pointer;
 }
 
 /* ─── HERO ─── */
@@ -1198,12 +1281,37 @@ textarea {
     }
 
     .services-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 160px;
+        gap: 12px;
     }
 
     .service-card {
-        padding: 24px;
-        height: 220px !important;
+        padding: 16px;
+        height: 160px !important;
+    }
+
+    .service-emoji {
+        font-size: 1.5rem !important;
+    }
+
+    .service-name {
+        font-size: 0.8rem !important;
+    }
+
+    .form-wrapper {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .form-info-box {
+        align-items: center;
+        text-align: center;
+    }
+
+    .info-item {
+        justify-content: center;
     }
 
     .service-form {
@@ -1220,7 +1328,18 @@ textarea {
 
     .footer-inner {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .footer-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-links {
+        align-items: center;
     }
 
     .wa-modal {
