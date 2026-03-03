@@ -17,83 +17,15 @@
             padding: 160px 0 80px;
             text-align: center;
         }
-
-        .hero-page h1 {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-
-        .hero-page p {
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-        }
-
-        .b-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 32px;
-            margin-top: 48px;
-        }
-
-        .b-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-soft);
-            border-radius: var(--radius);
-            padding: 32px;
-            transition: var(--transition);
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .b-card:hover {
-            border-color: var(--gold);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-gold);
-        }
-
-        .b-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .b-title {
-            color: var(--text-primary);
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-
-        .b-card:hover .b-title {
-            color: var(--gold);
-        }
-
-        .b-desc {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 24px;
-            flex-grow: 1;
-        }
-
-        .b-link {
-            color: var(--gold);
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-fixed">
+    <nav class="navbar">
         <div class="nav-inner">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <div class="logo-icon">
-                    <svg viewBox="0 0 166 202" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg viewBox="0 0 166 202" fill="none">
                         <path d="M165.7 100.2L85.6 20.1L8.2 97.5L0 89.3L85.6 3.7L165.7 83.8L165.7 100.2Z"
                             fill="#40D0FD" />
                         <path d="M165.7 141.2L124.6 100.1L83.5 141.2H165.7Z" fill="#40D0FD" />
@@ -102,32 +34,59 @@
                     </svg>
                 </div>
                 <div class="logo-text">
-                    <span class="logo-main">KARIGAR</span>
+                    <span class="logo-name">KARIGAR</span>
                     <span class="logo-sub">HOME AND OFFICES</span>
                 </div>
-            </div>
+            </a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="blogs.html">Blogs</a>
                 <a href="testimonials.html">Testimonials</a>
                 <a href="index.html#request" class="btn-nav">Book Now</a>
             </div>
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
-    <header class="hero-page">
-        <div class="container">
-            <h1 class="gradient-text">Our Blogs</h1>
-            <p>Tips, tricks and updates from the world of home maintenance.</p>
+    <section class="hero-page">
+        <div class="container reveal">
+            <span class="section-tag">Insights</span>
+            <h1>Knowledge Base</h1>
+            <p class="section-desc">Expert tips and guides for maintaining your home and office in peak condition.</p>
         </div>
-    </header>
+    </section>
 
-    <div class="blogs-page container">
-        <div class="b-grid" id="blogsGrid">
-            <script src="app.js" defer></script>
-            <!-- Open Graph / Social Media -->
+    <section class="blogs-section">
+        <div class="container">
+            <div class="blogs-grid" id="blogsGrid">
+                <!-- Blogs injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Detail Modal -->
+    <div class="wa-modal-overlay" id="blogModal">
+        <div class="wa-modal">
+            <button class="wa-close" id="blogCloseBtn">&times;</button>
+            <div class="wa-header">
+                <span id="blogIcon" style="font-size: 2rem; display: block; margin-bottom: 10px;"></span>
+                <h3 id="blogTitle"></h3>
+            </div>
+            <div id="blogContent"
+                style="color: var(--text-secondary); line-height: 1.6; max-height: 60vh; overflow-y: auto; padding: 10px 0;">
+                <p>Loading full article...</p>
+                <p>This is a detailed guide providing essential information on the selected service topic. Karigar
+                    Solutions is committed to providing expert tips to ensure your home and office systems operate
+                    efficiently.</p>
+            </div>
+            <button class="btn-submit" id="blogCloseAction" style="margin-top: 20px;">Close Reader</button>
         </div>
     </div>
+    <!-- Open Graph / Social Media -->
 
     <footer class="footer">
         <div class="container">
@@ -185,20 +144,72 @@
 
     <script>
         const BLOGS = [
-            { title: "Keeping your AC efficient in Summer", desc: "Essential tips to ensure your cooling stays optimal during peaking heat.", icon: "❄️" },
-            { title: "Solar Maintenance Checklist", desc: "Maximize your solar output with regular cleaning and inspection.", icon: "☀️" },
-            { title: "CCTV Security for Home", desc: "Choosing the right surveillance system for your space.", icon: "📹" },
-            { title: "Winter Plumbing Care", desc: "Avoid frozen pipes and leakages with these preventive measures.", icon: "🚿" }
+            { title: "Keeping your AC efficient in Summer", desc: "Essential tips to ensure your cooling stays optimal during peaking heat. Clean filters monthly.", icon: "❄️" },
+            { title: "Solar Maintenance Checklist", desc: "Maximize your solar output with regular cleaning and battery inspection.", icon: "☀️" },
+            { title: "CCTV Security for Home", desc: "Choosing the right surveillance system for your residential space and remote monitoring.", icon: "📹" },
+            { title: "Winter Plumbing Care", desc: "Avoid frozen pipes and leakages with these preventive measures for Islamabad winters.", icon: "🚿" },
+            { title: "IT Infrastructure for Offices", desc: "Setting up a robust server and networking environment for your growing business.", icon: "💻" },
+            { title: "Electrical Safety Audit", desc: "How to identify faulty wiring and prevent short circuits in older buildings.", icon: "⚡" },
+            { title: "Professional Deep Cleaning", desc: "The difference between regular cleaning and deep sanitization for healthy living.", icon: "🧹" },
+            { title: "Interior Design Trends 2026", desc: "Incorporating minimalism and tech-native features into your office design.", icon: "🛋️" },
+            { title: "Biometric Attendance Systems", desc: "Enhancing workplace security and punctuality with modern finger-print readers.", icon: "🔏" },
+            { title: "Garden Landscaping Tips", desc: "Turning your outdoor space into a lush oasis with sustainable gardening.", icon: "🌿" },
+            { title: "Fire Alarm Systems 101", desc: "Essential fire safety equipment every commercial building must have in 2026.", icon: "🚨" },
+            { title: "Paint and Polish Guide", desc: "Choosing the right finishes to protect your wood and metal surfaces.", icon: "🖌️" },
+            { title: "Efficient PBX Setup", desc: "Modernizing office communications with cloud-integrated telephone systems.", icon: "☎️" },
+            { title: "Data Center Cooling", desc: "Critical cooling strategies for high-performance server environments.", icon: "🌐" },
+            { title: "Glass and Aluminium Fixes", desc: "Maintaining modern facades and office partitions for longevity.", icon: "🪟" },
+            { title: "PA System Optimization", desc: "Clear audio distribution for large halls and corporate environments.", icon: "📢" },
+            { title: "General Supply Logistics", desc: "Streamlining your office supplies procurement with Karigar Solutions.", icon: "📦" },
+            { title: "Ceiling Repair Techniques", desc: "Fixing dampness and cracks in false ceilings before they expand.", icon: "🏠" },
+            { title: "Civil Works and Renovations", desc: "Planning a structural renovation without disrupting your daily workflow.", icon: "🏗️" },
+            { title: "High-Security Lock Systems", desc: "Protecting sensitive office areas with advanced security systems.", icon: "🔒" },
+            { title: "Handyman Essentials", desc: "Small fixes that make a big difference in property value and safety.", icon: "🔨" },
+            { title: "Water Proofing Secrets", desc: "Protecting your building's foundation from Islamabad's heavy monsoon rains.", icon: "🔧" }
         ];
 
-        document.getElementById('blogsGrid').innerHTML = BLOGS.map(blog => `
-            <a href="#" class="b-card reveal">
-                <span class="b-icon">${blog.icon}</span>
-                <h3 class="b-title">${blog.title}</h3>
-                <p class="b-desc">${blog.desc}</p>
-                <span class="b-link">Read More &rarr;</span>
-            </a>
-        `).join('');
+        function renderBlogs() {
+            const grid = document.getElementById('blogsGrid');
+            grid.innerHTML = BLOGS.map((blog, i) => `
+                <div class="b-card reveal" style="cursor: pointer;" onclick="openBlog(${i})">
+                    <span class="b-icon">${blog.icon}</span>
+                    <h3 class="b-title">${blog.title}</h3>
+                    <p class="b-desc">${blog.desc}</p>
+                    <span class="b-link">Read More &rarr;</span>
+                </div>
+            `).join('');
+
+            if (window.updateObservers) {
+                window.updateObservers();
+            } else {
+                document.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => window.updateObservers && window.updateObservers(), 500);
+                });
+            }
+        }
+
+        function openBlog(idx) {
+            const blog = BLOGS[idx];
+            document.getElementById('blogIcon').innerText = blog.icon;
+            document.getElementById('blogTitle').innerText = blog.title;
+            const modal = document.getElementById('blogModal');
+            modal.classList.add('active');
+        }
+
+        // Handle Modal Close
+        const blogModal = document.getElementById('blogModal');
+        const blogCloseBtn = document.getElementById('blogCloseBtn');
+        const blogCloseAction = document.getElementById('blogCloseAction');
+
+        [blogCloseBtn, blogCloseAction].forEach(btn => {
+            if (btn) btn.onclick = () => blogModal.classList.remove('active');
+        });
+
+        blogModal.onclick = (e) => {
+            if (e.target === blogModal) blogModal.classList.remove('active');
+        };
+
+        renderBlogs();
     </script>
     <!-- WhatsApp Floating Button -->
     <button class="wa-float-btn" id="waOpenBtn">
@@ -225,8 +236,18 @@
                     <input type="text" id="wa_name" placeholder="Full Name" required>
                 </div>
                 <div class="form-group">
-                    <label>Message</label>
-                    <textarea id="wa_msg" placeholder="I need help with..." required></textarea>
+                    <label>Service Required</label>
+                    <select id="waService" required>
+                        <option value="">Select a service</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Area</label>
+                    <input type="text" id="wa_area" placeholder="e.g. Blue Area, F-7" required>
+                </div>
+                <div class="form-group">
+                    <label>Message (Optional)</label>
+                    <textarea id="wa_msg" placeholder="Any specific details?"></textarea>
                 </div>
                 <button type="submit" class="btn-submit">Start Chat</button>
             </form>

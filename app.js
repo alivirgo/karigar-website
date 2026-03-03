@@ -6,6 +6,48 @@
 // ─── WORKER ENDPOINT (update after deploying worker) ───
 const WORKER_URL = 'https://karigar-worker.alivirgo123.workers.dev';
 
+// ─── SCROLL ANIMATIONS (IntersectionObserver) ───
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+function updateObservers() {
+    // Robust reveal: ensure elements are revealed even if they're already in view or observer fails
+    const revealed = document.querySelectorAll('.reveal');
+    if (revealed.length === 0) return;
+
+    revealed.forEach(el => {
+        // Fallback: if user is on very old browser or script timing is weird
+        observer.observe(el);
+        // Force active if already deeply scrolled to
+        if (el.getBoundingClientRect().top < window.innerHeight) {
+            el.classList.add('active');
+        }
+    });
+}
+
+// Mobile App / Touch Check
+function checkMobile() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        || (window.innerWidth <= 768);
+    if (isMobile) {
+        document.body.classList.add('is-mobile');
+    }
+}
+
+// Make globally available immediately
+window.updateObservers = updateObservers;
+
 // ─── SERVICES DATA ───
 const SERVICES = [
     { name: 'CCTV Camera', emoji: '📹' },
@@ -258,34 +300,8 @@ function showToast(el, msg, type) {
     setTimeout(() => { el.style.display = 'none'; }, 7000);
 }
 
-// ─── SCROLL ANIMATIONS (IntersectionObserver) ───
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-            // Once revealed, we don't need to observe it anymore
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-function updateObservers() {
-    const revealed = document.querySelectorAll('.reveal');
-    if (revealed.length === 0) return;
-    revealed.forEach(el => {
-        observer.observe(el);
-    });
-}
-
-// Ensure global availability
-window.updateObservers = updateObservers;
-
 document.addEventListener('DOMContentLoaded', () => {
+    checkMobile();
     updateObservers();
 });
 
@@ -322,11 +338,13 @@ if (waOpenBtn && waModal) {
 if (waForm) {
     waForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const name = document.getElementById('wa_name').value.trim();
-        const msg = document.getElementById('wa_msg').value.trim();
+        const name = document.getElementById('wa_name')?.value.trim();
+        const service = document.getElementById('waService')?.value.trim();
+        const area = document.getElementById('wa_area')?.value.trim();
+        const msg = document.getElementById('wa_msg')?.value.trim();
 
-        if (!name || !msg) {
-            alert('Please fill out all fields.');
+        if (!name || !service || !area) {
+            alert('Please fill out Name, Service, and Area.');
             return;
         }
 
@@ -336,10 +354,15 @@ if (waForm) {
         submitBtn.innerText = 'Connecting...';
 
         try {
-            const text = `Hi Karigar Solutions!\n\nName: ${name}\nIssue: ${msg}\n\nPlease help me with this.`;
+            let text = `*New Request via WhatsApp*\n\n`;
+            text += `*Name:* ${name}\n`;
+            text += `*Service:* ${service}\n`;
+            text += `*Area:* ${area}\n`;
+            if (msg) text += `*Message:* ${msg}`;
+
             const waLink = `https://wa.me/923015334468?text=${encodeURIComponent(text)}`;
 
-            waModal.classList.remove('active');
+            if (waModal) waModal.classList.remove('active');
             waForm.reset();
             window.open(waLink, '_blank');
         } catch (err) {

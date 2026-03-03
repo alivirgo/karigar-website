@@ -347,8 +347,18 @@
                     <input type="text" id="wa_name" placeholder="Full Name" required>
                 </div>
                 <div class="form-group">
-                    <label>Message</label>
-                    <textarea id="wa_msg" placeholder="I need help with..." required></textarea>
+                    <label>Service Required</label>
+                    <select id="waService" required>
+                        <option value="">Select a service</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Area</label>
+                    <input type="text" id="wa_area" placeholder="e.g. Blue Area, F-7" required>
+                </div>
+                <div class="form-group">
+                    <label>Message (Optional)</label>
+                    <textarea id="wa_msg" placeholder="Any specific details?"></textarea>
                 </div>
                 <button type="submit" class="btn-submit">Start Chat</button>
             </form>
