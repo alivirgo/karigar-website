@@ -35,19 +35,25 @@ const SERVICES = [
 // ─── NAVBAR SCROLL EFFECT ───
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
+    if (navbar) {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }
 }, { passive: true });
 
 // ─── HAMBURGER MENU ───
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    mobileMenu.classList.toggle('open');
-});
+
+if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        mobileMenu.classList.toggle('open');
+    });
+}
+
 function closeMobileMenu() {
-    hamburger.classList.remove('open');
-    mobileMenu.classList.remove('open');
+    if (hamburger) hamburger.classList.remove('open');
+    if (mobileMenu) mobileMenu.classList.remove('open');
 }
 
 // ─── RENDER SERVICES GRID ───
@@ -269,10 +275,15 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 function updateObservers() {
-    document.querySelectorAll('.reveal').forEach(el => {
+    const revealed = document.querySelectorAll('.reveal');
+    if (revealed.length === 0) return;
+    revealed.forEach(el => {
         observer.observe(el);
     });
 }
+
+// Ensure global availability
+window.updateObservers = updateObservers;
 
 document.addEventListener('DOMContentLoaded', () => {
     updateObservers();
@@ -285,64 +296,58 @@ const waModal = document.getElementById('waModal');
 const waForm = document.getElementById('waForm');
 
 if (waOpenBtn && waModal) {
-    // Populate Service Dropdown
+    // Populate Service Dropdown (if present)
     const waService = document.getElementById('waService');
-    SERVICES.forEach(s => {
-        const opt = document.createElement('option');
-        opt.value = s.name;
-        opt.textContent = `${s.emoji}  ${s.name}`;
-        waService.appendChild(opt);
-    });
+    if (waService) {
+        SERVICES.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.name;
+            opt.textContent = `${s.emoji}  ${s.name}`;
+            waService.appendChild(opt);
+        });
+    }
 
     // Open/Close Handlers
-    // WhatsApp Modal Logic
-    const waOpenBtn = document.getElementById('waOpenBtn');
-    const waCloseBtn = document.getElementById('waClose');
-    const waModal = document.getElementById('waModal');
-    const waForm = document.getElementById('waForm');
+    waOpenBtn.addEventListener('click', () => waModal.classList.add('active'));
 
-    if (waOpenBtn && waModal) {
-        waOpenBtn.addEventListener('click', () => waModal.classList.add('active'));
-    }
-    if (waCloseBtn && waModal) {
+    if (waCloseBtn) {
         waCloseBtn.addEventListener('click', () => waModal.classList.remove('active'));
     }
-    if (waModal) {
-        waModal.addEventListener('click', (e) => {
-            if (e.target === waModal) waModal.classList.remove('active');
-        });
-    }
 
-    if (waForm) {
-        waForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('wa_name').value.trim();
-            const msg = document.getElementById('wa_msg').value.trim();
+    waModal.addEventListener('click', (e) => {
+        if (e.target === waModal) waModal.classList.remove('active');
+    });
+}
 
-            if (!name || !msg) {
-                alert('Please fill out all fields.');
-                return;
-            }
+if (waForm) {
+    waForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('wa_name').value.trim();
+        const msg = document.getElementById('wa_msg').value.trim();
 
-            const submitBtn = waForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerText;
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Connecting...';
+        if (!name || !msg) {
+            alert('Please fill out all fields.');
+            return;
+        }
 
-            try {
-                const text = `Hi Karigar Solutions!\n\nName: ${name}\nIssue: ${msg}\n\nPlease help me with this.`;
-                const waLink = `https://wa.me/923015334468?text=${encodeURIComponent(text)}`;
+        const submitBtn = waForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerText;
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Connecting...';
 
-                waModal.classList.remove('active');
-                waForm.reset();
-                window.open(waLink, '_blank');
-            } catch (err) {
-                console.error('WA Error:', err);
-                alert('Could not open WhatsApp.');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = originalText;
-            }
-        });
-    }
+        try {
+            const text = `Hi Karigar Solutions!\n\nName: ${name}\nIssue: ${msg}\n\nPlease help me with this.`;
+            const waLink = `https://wa.me/923015334468?text=${encodeURIComponent(text)}`;
+
+            waModal.classList.remove('active');
+            waForm.reset();
+            window.open(waLink, '_blank');
+        } catch (err) {
+            console.error('WA Error:', err);
+            alert('Could not open WhatsApp.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = originalText;
+        }
+    });
 }

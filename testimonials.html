@@ -10,6 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
         rel="stylesheet" />
+    <script src="app.js" defer></script>
     <link rel="stylesheet" href="style.css" />
     <style>
         .hero-page {
@@ -206,13 +207,25 @@
         const WORKER_URL = 'https://karigar-worker.alivirgo123.workers.dev';
 
         async function fetchTestimonials() {
+            console.log('Fetching testimonials from:', WORKER_URL);
             try {
                 const res = await fetch(`${WORKER_URL}/api/testimonials`);
+                // process.stdout.write(`Worker response status: ${res.status}\n`); // This is Node.js specific, not for browser
+                console.log(`Worker response status: ${res.status}`); // Changed to console.log for browser environment
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
                 const data = await res.json();
+                console.log('Testimonials data received:', data);
+
                 document.getElementById('loading').style.display = 'none';
                 const grid = document.getElementById('tGrid');
+                if (!grid) {
+                    console.error('tGrid element not found!');
+                    return;
+                }
 
                 if (!data.testimonials || data.testimonials.length === 0) {
+                    console.log('No testimonials found in data.');
                     grid.innerHTML = '<p style="text-align:center; color: var(--text-secondary); grid-column: 1/-1;">No testimonials yet.</p>';
                     return;
                 }
@@ -236,10 +249,14 @@
 
                 // Trigger reveal animations for newly added elements
                 if (window.updateObservers) {
-                    updateObservers();
+                    console.log('Updating observers...');
+                    window.updateObservers();
+                } else {
+                    console.warn('window.updateObservers not found!');
                 }
             } catch (err) {
-                document.getElementById('loading').textContent = 'Failed to load testimonials.';
+                console.error('Fetch testimonials failed:', err);
+                document.getElementById('loading').textContent = 'Failed to load testimonials. ' + err.message;
             }
         }
         document.addEventListener('DOMContentLoaded', fetchTestimonials);
@@ -277,7 +294,6 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
 </body>
 
 </html>
