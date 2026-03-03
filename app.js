@@ -8,7 +8,7 @@ const WORKER_URL = 'https://karigar-worker.alivirgo123.workers.dev';
 
 // ─── SERVICES DATA ───
 const SERVICES = [
-    { name: 'CCTV Camera', emoji: '📷' },
+    { name: 'CCTV Camera', emoji: '📹' },
     { name: 'Gardening', emoji: '🌿' },
     { name: 'General Supply', emoji: '📦' },
     { name: 'Ceiling Services', emoji: '🏠' },
@@ -59,12 +59,14 @@ function renderServicesGrid() {
 
     // Populate grid
     grid.innerHTML = SERVICES.map((s, i) => `
-    <div class="service-card" data-service="${s.name}" id="svc-${i}" onclick="selectService('${s.name}', ${i})">
+    <div class="service-card reveal" data-service="${s.name}" id="svc-${i}" onclick="selectService('${s.name}', ${i})">
       <span class="service-emoji">${s.emoji}</span>
       <span class="service-name">${s.name}</span>
-      <span class="service-check" style="display:flex">✓</span>
+      <div class="service-check">✓</div>
     </div>
   `).join('');
+
+    updateObservers();
 
     // Hide all checks initially
     document.querySelectorAll('.service-check').forEach(el => el.style.display = 'none');
@@ -87,7 +89,6 @@ function selectService(name, idx) {
     });
     const card = document.getElementById(`svc-${idx}`);
     card.classList.add('selected');
-    card.querySelector('.service-check').style.display = 'flex';
 
     // Sync dropdown
     const select = document.getElementById('serviceType');
@@ -108,13 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedService = e.target.value;
         SERVICES.forEach((s, i) => {
             const card = document.getElementById(`svc-${i}`);
-            const check = card.querySelector('.service-check');
             if (s.name === selectedService) {
                 card.classList.add('selected');
-                check.style.display = 'flex';
             } else {
                 card.classList.remove('selected');
-                check.style.display = 'none';
             }
         });
     });
@@ -247,20 +245,29 @@ function showToast(el, msg, type) {
 }
 
 // ─── SCROLL ANIMATIONS (IntersectionObserver) ───
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
 const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            e.target.style.opacity = '1';
-            e.target.style.transform = 'translateY(0)';
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            // Once revealed, we don't need to observe it anymore
+            observer.unobserve(entry.target);
         }
     });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+}, observerOptions);
 
-document.querySelectorAll('.service-card, .step-card, .contact-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    observer.observe(el);
+function updateObservers() {
+    document.querySelectorAll('.reveal').forEach(el => {
+        observer.observe(el);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateObservers();
 });
 
 // ─── WHATSAPP MODAL LOGIC ───
@@ -280,65 +287,54 @@ if (waOpenBtn && waModal) {
     });
 
     // Open/Close Handlers
-    waOpenBtn.addEventListener('click', () => waModal.classList.add('active'));
-    waCloseBtn.addEventListener('click', () => waModal.classList.remove('active'));
-    waModal.addEventListener('click', (e) => {
-        if (e.target === waModal) waModal.classList.remove('active');
-    });
+    // WhatsApp Modal Logic
+    const waOpenBtn = document.getElementById('waOpenBtn');
+    const waCloseBtn = document.getElementById('waClose');
+    const waModal = document.getElementById('waModal');
+    const waForm = document.getElementById('waForm');
 
-    // Handle Submit
-    waForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    if (waOpenBtn && waModal) {
+        waOpenBtn.addEventListener('click', () => waModal.classList.add('active'));
+    }
+    if (waCloseBtn && waModal) {
+        waCloseBtn.addEventListener('click', () => waModal.classList.remove('active'));
+    }
+    if (waModal) {
+        waModal.addEventListener('click', (e) => {
+            if (e.target === waModal) waModal.classList.remove('active');
+        });
+    }
 
-        const name = document.getElementById('waName').value.trim();
-        const phone = document.getElementById('waPhone').value.trim();
-        const area = document.getElementById('waArea').value.trim();
-        const service = document.getElementById('waService').value;
+    if (waForm) {
+        waForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('wa_name').value.trim();
+            const msg = document.getElementById('wa_msg').value.trim();
 
-        if (!name || !phone || !area || !service) {
-            alert('Please fill out all fields.');
-            return;
-        }
+            if (!name || !msg) {
+                alert('Please fill out all fields.');
+                return;
+            }
 
-        const btnText = document.getElementById('waBtnText');
-        const btnLoader = document.getElementById('waBtnLoader');
-        const submitBtn = waForm.querySelector('button[type="submit"]');
+            const submitBtn = waForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Connecting...';
 
-        submitBtn.disabled = true;
-        btnText.style.display = 'none';
-        btnLoader.style.display = 'inline';
+            try {
+                const text = `Hi Karigar Solutions!\n\nName: ${name}\nIssue: ${msg}\n\nPlease help me with this.`;
+                const waLink = `https://wa.me/923015334468?text=${encodeURIComponent(text)}`;
 
-        const payload = {
-            customerName: name,
-            customerPhone: phone,
-            customerArea: area,
-            serviceType: service,
-            submittedAt: new Date().toISOString(),
-            source: 'whatsapp',
-        };
-
-        try {
-            await fetch(`${WORKER_URL}/api/service-request`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
-
-            // Build WhatsApp Message
-            const text = `Hi Karigar Services!\n\nI need ${service}.\n\nName: ${name}\nPhone: ${phone}\nArea: ${area}\n\nPlease let me know when a technician can arrive.`;
-            const waLink = `https://wa.me/923335210543?text=${encodeURIComponent(text)}`;
-
-            // Close modal & open WhatsApp
-            waModal.classList.remove('active');
-            waForm.reset();
-            window.open(waLink, '_blank');
-        } catch (err) {
-            console.error('WA Submit Error:', err);
-            alert('Could not submit request. Please try again or open WhatsApp directly.');
-        } finally {
-            submitBtn.disabled = false;
-            btnText.style.display = 'inline';
-            btnLoader.style.display = 'none';
-        }
-    });
+                waModal.classList.remove('active');
+                waForm.reset();
+                window.open(waLink, '_blank');
+            } catch (err) {
+                console.error('WA Error:', err);
+                alert('Could not open WhatsApp.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
+        });
+    }
 }
