@@ -324,9 +324,9 @@ label {
     transition: transform 0.3s ease;
 }
 
-.mobile-links a:hover {
-    color: var(--brand-accent);
-    transform: scale(1.1);
+.mobile-links .btn-nav {
+    font-size: 1.4rem !important;
+    padding: 12px 30px !important;
 }
 
 .mobile-menu .close-menu {
