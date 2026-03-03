@@ -178,8 +178,10 @@
                         </div>
                     ` : '';
 
+                    // Note: We add 'active' class IMMEDIATELY here to ensure visibility
+                    // since these are rendered dynamically and might skip the observer.
                     return `
-                        <div class="t-card-v2 reveal">
+                        <div class="t-card-v2 reveal active">
                             ${verifiedBadge}
                             <div class="t-stars-v2">${stars}</div>
                             <p class="t-text-v2">${t.text}</p>
@@ -198,8 +200,9 @@
                 // Stage 2: Reveal the grid immediately even if images are decoding
                 loading.style.display = 'none';
                 grid.style.opacity = '1';
+                grid.style.visibility = 'visible'; // Explicitly set visibility
 
-                // Stage 3: Trigger entrance animations
+                // Stage 3: Trigger entrance animations for any other observer-based items
                 setTimeout(() => {
                     if (window.updateObservers) {
                         window.updateObservers();
