@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const text = `*New Lead from Karigar Website*\n\n*Name:* ${name}\n*Service:* ${service}\n*Area:* ${area}\n*Message:* ${msg}`;
             const encoded = encodeURIComponent(text);
-            window.open(`https://wa.me/923335210543?text=${encoded}`, '_blank');
+            window.open(`https://wa.me/+923335210543?text=${encoded}`, '_blank');
             waModal.classList.remove('active');
             document.body.style.overflow = '';
         });
