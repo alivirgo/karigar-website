@@ -21,7 +21,7 @@
 </head>
 
 <body>
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-inner">
             <a href="index.html" class="logo">
                 <div class="logo-icon">
@@ -51,6 +51,17 @@
             </button>
         </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-menu" id="closeMenu">&times;</button>
+        <div class="mobile-links">
+            <a href="index.html">Home</a>
+            <a href="blogs.html">Blogs</a>
+            <a href="testimonials.html">Testimonials</a>
+            <a href="index.html#request" class="btn-nav">Book Now</a>
+        </div>
+    </div>
 
     <section class="hero-page">
         <div class="container reveal">
@@ -144,47 +155,43 @@
 
     <script>
         const BLOGS = [
-            { title: "Keeping your AC efficient in Summer", desc: "Essential tips to ensure your cooling stays optimal during peaking heat. Clean filters monthly.", icon: "❄️" },
-            { title: "Solar Maintenance Checklist", desc: "Maximize your solar output with regular cleaning and battery inspection.", icon: "☀️" },
-            { title: "CCTV Security for Home", desc: "Choosing the right surveillance system for your residential space and remote monitoring.", icon: "📹" },
-            { title: "Winter Plumbing Care", desc: "Avoid frozen pipes and leakages with these preventive measures for Islamabad winters.", icon: "🚿" },
-            { title: "IT Infrastructure for Offices", desc: "Setting up a robust server and networking environment for your growing business.", icon: "💻" },
-            { title: "Electrical Safety Audit", desc: "How to identify faulty wiring and prevent short circuits in older buildings.", icon: "⚡" },
-            { title: "Professional Deep Cleaning", desc: "The difference between regular cleaning and deep sanitization for healthy living.", icon: "🧹" },
-            { title: "Interior Design Trends 2026", desc: "Incorporating minimalism and tech-native features into your office design.", icon: "🛋️" },
-            { title: "Biometric Attendance Systems", desc: "Enhancing workplace security and punctuality with modern finger-print readers.", icon: "🔏" },
-            { title: "Garden Landscaping Tips", desc: "Turning your outdoor space into a lush oasis with sustainable gardening.", icon: "🌿" },
-            { title: "Fire Alarm Systems 101", desc: "Essential fire safety equipment every commercial building must have in 2026.", icon: "🚨" },
-            { title: "Paint and Polish Guide", desc: "Choosing the right finishes to protect your wood and metal surfaces.", icon: "🖌️" },
-            { title: "Efficient PBX Setup", desc: "Modernizing office communications with cloud-integrated telephone systems.", icon: "☎️" },
-            { title: "Data Center Cooling", desc: "Critical cooling strategies for high-performance server environments.", icon: "🌐" },
-            { title: "Glass and Aluminium Fixes", desc: "Maintaining modern facades and office partitions for longevity.", icon: "🪟" },
-            { title: "PA System Optimization", desc: "Clear audio distribution for large halls and corporate environments.", icon: "📢" },
-            { title: "General Supply Logistics", desc: "Streamlining your office supplies procurement with Karigar Solutions.", icon: "📦" },
-            { title: "Ceiling Repair Techniques", desc: "Fixing dampness and cracks in false ceilings before they expand.", icon: "🏠" },
-            { title: "Civil Works and Renovations", desc: "Planning a structural renovation without disrupting your daily workflow.", icon: "🏗️" },
-            { title: "High-Security Lock Systems", desc: "Protecting sensitive office areas with advanced security systems.", icon: "🔒" },
-            { title: "Handyman Essentials", desc: "Small fixes that make a big difference in property value and safety.", icon: "🔨" },
-            { title: "Water Proofing Secrets", desc: "Protecting your building's foundation from Islamabad's heavy monsoon rains.", icon: "🔧" }
+            { title: "Keeping your AC efficient in Summer", desc: "Essential tips to ensure your cooling stays optimal peaking heat.", icon: "❄️", url: "blog-posts/ac.html" },
+            { title: "Solar Maintenance Checklist", desc: "Maximize your solar output with regular cleaning and battery inspection.", icon: "☀️", url: "blog-posts/solar.html" },
+            { title: "CCTV Security for Home", desc: "Choosing the right surveillance system for your residential space.", icon: "📹", url: "blog-posts/cctv.html" },
+            { title: "Winter Plumbing Care", desc: "Avoid frozen pipes and leakages with these preventive measures.", icon: "🚿", url: "blog-posts/plumbing.html" },
+            { title: "IT Infrastructure for Offices", desc: "Setting up a robust server and networking environment.", icon: "💻", url: "blog-posts/it.html" },
+            { title: "Electrical Safety Audit", desc: "How to identify faulty wiring and prevent short circuits.", icon: "⚡", url: "blog-posts/electrical.html" },
+            { title: "Professional Deep Cleaning", desc: "The difference between regular cleaning and deep sanitization.", icon: "🧹", url: "blog-posts/cleaning.html" },
+            { title: "Interior Design Trends 2026", desc: "Incorporating minimalism and tech-native features.", icon: "🛋️", url: "blog-posts/interior.html" },
+            { title: "Biometric Attendance Systems", desc: "Enhancing workplace security and punctuality with modern readers.", icon: "🔏", url: "blog-posts/biometric.html" },
+            { title: "Garden Landscaping Tips", desc: "Turning your outdoor space into a lush oasis with sustainable gardening.", icon: "🌿", url: "blog-posts/garden.html" },
+            { title: "Fire Alarm Systems 101", desc: "Essential fire safety equipment every commercial building must have.", icon: "🚨", url: "blog-posts/fire.html" },
+            { title: "Paint and Polish Guide", desc: "Choosing the right finishes to protect your wood and metal surfaces.", icon: "🖌️", url: "blog-posts/paint.html" },
+            { title: "Efficient PBX Setup", desc: "Modernizing office communications with cloud-integrated systems.", icon: "☎️", url: "blog-posts/pbx.html" },
+            { title: "Data Center Cooling", desc: "Critical cooling strategies for high-performance server environments.", icon: "🌐", url: "blog-posts/data-center.html" },
+            { title: "Glass and Aluminium Fixes", desc: "Maintaining modern facades and office partitions for longevity.", icon: "🪟", url: "blog-posts/glass.html" },
+            { title: "PA System Optimization", desc: "Clear audio distribution for large halls and corporate environments.", icon: "📢", url: "blog-posts/pa.html" },
+            { title: "General Supply Logistics", desc: "Streamlining your office supplies procurement with Karigar Solutions.", icon: "📦", url: "blog-posts/supply.html" },
+            { title: "Ceiling Repair Techniques", desc: "Fixing dampness and cracks in false ceilings before they expand.", icon: "🏠", url: "blog-posts/ceiling.html" },
+            { title: "Civil Works and Renovations", desc: "Planning a structural renovation without disrupting your workflow.", icon: "🏗️", url: "blog-posts/civil.html" },
+            { title: "High-Security Lock Systems", desc: "Protecting sensitive office areas with advanced security systems.", icon: "🔒", url: "blog-posts/lock.html" },
+            { title: "Handyman Essentials", desc: "Small fixes that make a big difference in property value and safety.", icon: "🔨", url: "blog-posts/handyman.html" },
+            { title: "Water Proofing Secrets", desc: "Protecting your building's foundation from heavy monsoon rains.", icon: "🔧", url: "blog-posts/waterproofing.html" }
         ];
 
         function renderBlogs() {
             const grid = document.getElementById('blogsGrid');
             grid.innerHTML = BLOGS.map((blog, i) => `
-                <div class="b-card reveal" style="cursor: pointer;" onclick="openBlog(${i})">
+                <a href="${blog.url}" class="b-card reveal" style="text-decoration: none; display: block;">
                     <span class="b-icon">${blog.icon}</span>
                     <h3 class="b-title">${blog.title}</h3>
                     <p class="b-desc">${blog.desc}</p>
                     <span class="b-link">Read More &rarr;</span>
-                </div>
+                </a>
             `).join('');
 
             if (window.updateObservers) {
                 window.updateObservers();
-            } else {
-                document.addEventListener('DOMContentLoaded', () => {
-                    setTimeout(() => window.updateObservers && window.updateObservers(), 500);
-                });
             }
         }
 
@@ -254,6 +261,7 @@
         </div>
     </div>
 
+    <button class="back-to-top" id="backToTop">↑</button>
 </body>
 
 </html>

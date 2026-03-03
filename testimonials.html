@@ -33,7 +33,7 @@
 </head>
 
 <body>
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-inner">
             <a href="index.html" class="logo">
                 <div class="logo-icon">
@@ -63,6 +63,17 @@
             </button>
         </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-menu" id="closeMenu">&times;</button>
+        <div class="mobile-links">
+            <a href="index.html">Home</a>
+            <a href="blogs.html">Blogs</a>
+            <a href="testimonials.html">Testimonials</a>
+            <a href="index.html#request" class="btn-nav">Book Now</a>
+        </div>
+    </div>
 
     <header class="hero-page">
         <div class="container">
@@ -262,6 +273,8 @@
             </form>
         </div>
     </div>
+
+    <button class="back-to-top" id="backToTop">↑</button>
 </body>
 
 </html>

@@ -42,6 +42,9 @@ function checkMobile() {
         || (window.innerWidth <= 768);
     if (isMobile) {
         document.body.classList.add('is-mobile');
+        document.body.setAttribute('data-view', 'mobile');
+    } else {
+        document.body.setAttribute('data-view', 'desktop');
     }
 }
 
