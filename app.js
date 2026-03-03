@@ -187,62 +187,64 @@ function validateForm() {
 }
 
 // ─── FORM SUBMISSION ───
-document.getElementById('serviceForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
+const serviceForm = document.getElementById('serviceForm');
+if (serviceForm) {
+    serviceForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
 
-    const btn = document.getElementById('submitBtn');
-    const btnText = btn.querySelector('.btn-text');
-    const btnLoader = document.getElementById('btnLoader');
-    const toast = document.getElementById('formToast');
+        const btn = document.getElementById('submitBtn');
+        const btnText = btn.querySelector('.btn-text');
+        const btnLoader = document.getElementById('btnLoader');
+        const toast = document.getElementById('formToast');
 
-    // Loading state
-    btn.disabled = true;
-    btnText.style.display = 'none';
-    btnLoader.style.display = 'inline';
-    toast.style.display = 'none';
+        // Loading state
+        btn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoader.style.display = 'inline';
+        toast.style.display = 'none';
 
-    const payload = {
-        customerName: getVal('customerName'),
-        customerPhone: getVal('customerPhone'),
-        customerArea: getVal('customerArea'),
-        serviceType: getVal('serviceType'),
-        mapsPin: getVal('mapsPin') || null,
-        notes: getVal('notes') || null,
-        submittedAt: new Date().toISOString(),
-        source: 'website',
-    };
+        const payload = {
+            customerName: getVal('customerName'),
+            customerPhone: getVal('customerPhone'),
+            customerArea: getVal('customerArea'),
+            serviceType: getVal('serviceType'),
+            mapsPin: getVal('mapsPin') || null,
+            notes: getVal('notes') || null,
+            submittedAt: new Date().toISOString(),
+            source: 'website',
+        };
 
-    try {
-        const res = await fetch(`${WORKER_URL}/api/service-request`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        });
-
-        if (res.ok) {
-            showToast(toast, '✅ Request submitted! Our team will call you shortly.', 'success');
-            document.getElementById('serviceForm').reset();
-            // Clear service selection
-            selectedService = '';
-            document.querySelectorAll('.service-card').forEach(c => {
-                c.classList.remove('selected');
-                c.querySelector('.service-check').style.display = 'none';
+        try {
+            const res = await fetch(`${WORKER_URL}/api/service-request`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
             });
-        } else {
-            const err = await res.json().catch(() => ({}));
-            showToast(toast, `❌ ${err.message || 'Something went wrong. Please try again or call us directly.'}`, 'error');
-        }
-    } catch (err) {
-        showToast(toast, '❌ Could not reach the server. Please call us at 0333 5210543.', 'error');
-        console.error('Submission error:', err);
-    } finally {
-        btn.disabled = false;
-        btnText.style.display = 'inline';
-        btnLoader.style.display = 'none';
-    }
-});
 
+            if (res.ok) {
+                showToast(toast, '✅ Request submitted! Our team will call you shortly.', 'success');
+                document.getElementById('serviceForm').reset();
+                // Clear service selection
+                selectedService = '';
+                document.querySelectorAll('.service-card').forEach(c => {
+                    c.classList.remove('selected');
+                    c.querySelector('.service-check').style.display = 'none';
+                });
+            } else {
+                const err = await res.json().catch(() => ({}));
+                showToast(toast, `❌ ${err.message || 'Something went wrong. Please try again or call us directly.'}`, 'error');
+            }
+        } catch (err) {
+            showToast(toast, '❌ Could not reach the server. Please call us at 0333 5210543.', 'error');
+            console.error('Submission error:', err);
+        } finally {
+            btn.disabled = false;
+            btnText.style.display = 'inline';
+            btnLoader.style.display = 'none';
+        }
+    });
+}
 function showToast(el, msg, type) {
     el.textContent = msg;
     el.className = `form-toast ${type}`;
@@ -343,4 +345,3 @@ if (waOpenBtn && waModal) {
             }
         });
     }
-}
