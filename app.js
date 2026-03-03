@@ -143,6 +143,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     }
+
+    // ─── FORM SUBMISSION ───
+    const serviceForm = document.getElementById('serviceForm');
+    if (serviceForm) {
+        serviceForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!validateForm()) return;
+
+            const btn = document.getElementById('submitBtn');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = document.getElementById('btnLoader');
+            const toast = document.getElementById('formToast');
+
+            // Loading state
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'inline';
+            toast.style.display = 'none';
+
+            const payload = {
+                customerName: getVal('customerName'),
+                customerPhone: getVal('customerPhone'),
+                customerArea: getVal('customerArea'),
+                serviceType: getVal('serviceType'),
+                mapsPin: getVal('mapsPin') || null,
+                notes: getVal('notes') || null
+            };
+
+            try {
+                const res = await fetch(`${WORKER_URL}/api/request-service`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    showToast(toast, '✅ Request submitted! Our team will call you shortly.', 'success');
+                    document.getElementById('serviceForm').reset();
+                    selectedService = '';
+                    document.querySelectorAll('.service-card').forEach(c => {
+                        c.classList.remove('selected');
+                        const check = c.querySelector('.service-check');
+                        if (check) check.style.display = 'none';
+                    });
+                } else {
+                    const err = await res.json().catch(() => ({}));
+                    showToast(toast, `❌ ${err.message || 'Something went wrong. Please try again or call us directly.'}`, 'error');
+                }
+            } catch (err) {
+                showToast(toast, '❌ Could not reach the server. Please call us at 0333 5210543.', 'error');
+                console.error('Submission error:', err);
+            } finally {
+                btn.disabled = false;
+                btnText.style.display = 'inline';
+                btnLoader.style.display = 'none';
+            }
+        });
+    }
+
 });
 
 let selectedService = '';
@@ -178,3 +237,41 @@ window.selectService = (name, el) => {
     const select = document.getElementById('serviceType');
     if (select) select.value = name;
 };
+
+// ─── FORM HELPERS ───
+function validateForm() {
+    let valid = true;
+    valid = checkField('customerName', 'nameError', 'Please enter your full name') && valid;
+    valid = checkField('customerPhone', 'phoneError', 'Please enter a valid phone number') && valid;
+    valid = checkField('customerArea', 'areaError', 'Please enter your area') && valid;
+    valid = checkField('serviceType', 'serviceError', 'Please select a service type') && valid;
+    return valid;
+}
+
+function checkField(id, errId, msg) {
+    const el = document.getElementById(id);
+    const errEl = document.getElementById(errId);
+    if (!el || !errEl) return true;
+    if (!el.value.trim()) {
+        el.classList.add('error');
+        errEl.textContent = msg;
+        return false;
+    } else {
+        el.classList.remove('error');
+        errEl.textContent = '';
+        return true;
+    }
+}
+
+function getVal(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+}
+
+function showToast(el, msg, type) {
+    if (!el) return;
+    el.textContent = msg;
+    el.className = `form-toast ${type}`;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 5000);
+}
