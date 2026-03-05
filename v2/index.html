@@ -10,7 +10,16 @@
     <meta name="keywords"
         content="Karigar Services, Home maintenance Islamabad, Handyman Rawalpindi, AC repair, Electrician near me, Plumber Islamabad, CCTV installation, IT services, Carpenter Islamabad, Professional home repair" />
 
+    <script>
+        // Separate mobile version redirection
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && 'ontouchstart' in window)) {
+            if (!window.location.search.includes('view=desktop')) {
+                window.location.replace("mobile.html");
+            }
+        }
+    </script>
     <script src="app.js?v=1.3" defer></script>
+
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Karigar Services & Supplies — Services at Your Door Step in Islamabad" />
