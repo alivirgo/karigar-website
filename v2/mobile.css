@@ -5,17 +5,17 @@
 ═══════════════════════════════════════════════════ */
 
 :root {
-    --bg-black: #000000;
-    --bg-dark: #080808;
-    --bg-card: #151516;
+    --bg-black: #f5f5f7;
+    --bg-dark: #ffffff;
+    --bg-card: #fdfdfd;
     --brand-blue: #0071e3;
     --brand-accent: #E1A730;
-    --text-primary: #f5f5f7;
+    --text-primary: #1d1d1f;
     --text-secondary: #86868b;
-    --border: rgba(255, 255, 255, 0.08);
-    --glass: rgba(22, 22, 23, 0.8);
+    --border: rgba(0, 0, 0, 0.08);
+    --glass: rgba(255, 255, 255, 0.8);
     --radius: 16px;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 *,
@@ -58,6 +58,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    color: var(--text-primary);
 }
 
 .m-logo-icon {
@@ -80,7 +81,7 @@ body {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -92,7 +93,7 @@ body {
 /* ─── ABOVE THE FOLD (ATF) ─── */
 .atf-container {
     padding: 70px 16px 20px;
-    background: linear-gradient(180deg, #001220 0%, #000 100%);
+    background: linear-gradient(180deg, #f5f5f7 0%, #ffffff 100%);
 }
 
 .hero-mini {
@@ -104,7 +105,7 @@ body {
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 8px;
-    background: linear-gradient(180deg, #fff, #86868b);
+    background: linear-gradient(180deg, #1d1d1f, #424245);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -165,6 +166,7 @@ body {
 
 .m-service-card.primary {
     background: linear-gradient(135deg, #0071e3, #004d99);
+    color: #ffffff;
     grid-column: span 2;
     flex-direction: row;
     align-items: center;
@@ -192,8 +194,8 @@ body {
 }
 
 .btn-call {
-    background: #fff;
-    color: #000;
+    background: #1d1d1f;
+    color: #fff;
 }
 
 .btn-wa {
@@ -269,11 +271,11 @@ section {
 
 .m-input {
     width: 100%;
-    background: rgba(255, 255, 255, 0.05);
+    background: #f5f5f7;
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 12px 14px;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 1rem;
 }
 
