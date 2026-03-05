@@ -12,11 +12,12 @@
 
     <script>
         // Separate mobile version redirection
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && 'ontouchstart' in window)) {
-            if (!window.location.search.includes('view=desktop')) {
-                window.location.replace("mobile.html");
+        (function () {
+            var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 992 && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
+            if (isMobile && window.location.search.indexOf('view=desktop') === -1) {
+                window.location.replace("/v2/mobile.html");
             }
-        }
+        })();
     </script>
     <script src="app.js?v=1.3" defer></script>
 
