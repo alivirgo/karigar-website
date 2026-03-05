@@ -67,6 +67,27 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Hamburger Menu Logic
+    const mHamburger = document.getElementById('m_hamburger');
+    const mMobileMenu = document.getElementById('m_mobileMenu');
+    const mCloseMenu = document.getElementById('m_closeMenu');
+
+    if (mHamburger && mMobileMenu) {
+        mHamburger.addEventListener('click', () => {
+            mHamburger.classList.toggle('open');
+            mMobileMenu.classList.toggle('active');
+            document.body.style.overflow = mMobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+    }
+
+    if (mCloseMenu && mMobileMenu) {
+        mCloseMenu.addEventListener('click', () => {
+            mHamburger.classList.remove('open');
+            mMobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
 });
 
 // Helper to select service from grid

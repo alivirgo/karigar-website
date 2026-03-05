@@ -34,8 +34,26 @@
         <div class="m-header-actions">
             <a href="tel:+923335210543" class="btn-icon">📞</a>
             <a href="https://wa.me/+923335210543" class="btn-icon">💬</a>
+            <button class="hamburger" id="m_hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="m_mobileMenu">
+        <button class="close-menu" id="m_closeMenu">&times;</button>
+        <div class="mobile-links">
+            <a href="#" onclick="selectService('AC Services'); document.getElementById('m_closeMenu').click()">AC
+                Services</a>
+            <a href="#" onclick="selectService('Plumbing'); document.getElementById('m_closeMenu').click()">Plumbing</a>
+            <a href="#"
+                onclick="selectService('Electrical Services'); document.getElementById('m_closeMenu').click()">Electrical</a>
+            <a href="#request" onclick="document.getElementById('m_closeMenu').click()">Book Now</a>
+        </div>
+    </div>
 
     <!-- Above the Fold: High Impact -->
     <div class="atf-container">
